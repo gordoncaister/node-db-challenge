@@ -1,6 +1,7 @@
 const express = require('express');
 
 const Projects = require('./projects-model.js');
+const Tasks = require('../tasks/tasks-model.js');
 
 const router = express.Router();
 
@@ -18,7 +19,14 @@ router.get('/', (req, res) => {
 router.get("/:id",validateProjectID,(req,res)=>{
     Projects.getProjectsByID(req.params.id)
         .then(project => {
-            res.status(200).json(project);
+            Tasks.getTasksByProjectId(req.params.id)
+                .then(tasks => {
+                    res.status(200).json({...project,tasks:tasks});
+                })
+                .catch(err=>{
+                    console.log(err)
+                    res.status(500).json({error: "Database failure while findin tasks for that project id"})
+                })
         })
         .catch(err => {
             res.status(500).json({ message: 'Failed to get project by that ID' });
