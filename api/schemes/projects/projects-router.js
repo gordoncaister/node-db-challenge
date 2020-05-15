@@ -57,8 +57,7 @@ function validateProjectID (req,res,next){
         })
         .catch(err => {
             res.status(500).json({ message: 'Failed to get project by that ID' });
-        });
-    
+        });   
 }
 
 module.exports = router;

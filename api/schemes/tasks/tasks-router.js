@@ -1,6 +1,7 @@
 const express = require('express');
 
 const Tasks = require('./tasks-model.js');
+const Projects = require ("../projects/projects-model")
 
 const router = express.Router();
 
@@ -17,6 +18,7 @@ router.get('/', (req, res) => {
 
 router.post("/",validateTask,(req,res)=>{
     console.log("task post")
+    
     Tasks.createTask(req.body)
         .then(task => {
             res.status(201).json(task)
@@ -27,11 +29,29 @@ router.post("/",validateTask,(req,res)=>{
 })
 
 function validateTask (req,res,next){
-    if (req.body.task_name){
-        next();
+    if (req.body.project_id) {
+        Projects.getProjectsByID(req.body.project_id)
+            .then(project =>{
+                console.log("Task project", project)
+                if (project.length!==0){
+                    if (req.body.task_description){
+                        next();
+                    } else {
+                        res.status(401).json({message: "Please create a task name"})
+                    }
+                } else {
+                    res.status(400).json({message: "Could not find a project by that ID"})
+                }
+            })
+            .catch(err => {
+                res.status(500).json({ message: 'Failed to get project by that ID' });
+            });   
     } else {
-        res.status(401).json({message: "Please create a task name"})
+        res.status(401).json({message: "Please iinsert a project_id that references an existing project"})
     }
+    
 }
+
+
 
 module.exports = router;
