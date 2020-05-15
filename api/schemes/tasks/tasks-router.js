@@ -15,4 +15,23 @@ router.get('/', (req, res) => {
         });
   });
 
+router.post("/",validateTask,(req,res)=>{
+    console.log("task post")
+    Tasks.createTask(req.body)
+        .then(task => {
+            res.status(201).json(task)
+        })
+        .catch(err => {
+            res.status(500).json({error: "Database error while creating task"+err})
+        })
+})
+
+function validateTask (req,res,next){
+    if (req.body.task_name){
+        next();
+    } else {
+        res.status(401).json({message: "Please create a task name"})
+    }
+}
+
 module.exports = router;

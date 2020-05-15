@@ -17,4 +17,5 @@ function createProject(project){
 
 function getProjectsByID(project_id) {
     return db("projects")
+    .where({project_id})
 }

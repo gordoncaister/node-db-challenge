@@ -15,6 +15,16 @@ router.get('/', (req, res) => {
         });
   });
 
+router.get("/:id",(req,res)=>{
+    Projects.getProjectsByID(req.params.id)
+        .then(project => {
+            res.status(200).json(project);
+        })
+        .catch(err => {
+            res.status(500).json({ message: 'Failed to get project by that ID' });
+        });
+})
+
 
 router.post("/",validateProject,(req,res)=>{
     console.log("projects post")
