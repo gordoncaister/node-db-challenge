@@ -15,7 +15,7 @@ router.get('/', (req, res) => {
         });
   });
 
-router.get("/:id",(req,res)=>{
+router.get("/:id",validateProjectID,(req,res)=>{
     Projects.getProjectsByID(req.params.id)
         .then(project => {
             res.status(200).json(project);
@@ -44,6 +44,21 @@ function validateProject (req,res,next){
     } else {
         res.status(401).json({message: "Please create a project name"})
     }
+}
+
+function validateProjectID (req,res,next){
+    Projects.getProjectsByID(req.params.id)
+        .then(project =>{
+            if (project.length!==0){
+                next();
+            } else {
+                res.status(400).json({message: "Could not find a project by that ID"})
+            }
+        })
+        .catch(err => {
+            res.status(500).json({ message: 'Failed to get project by that ID' });
+        });
+    
 }
 
 module.exports = router;
