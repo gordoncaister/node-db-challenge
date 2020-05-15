@@ -52,7 +52,7 @@ Demonstrate your understanding of this week's concepts by answering the followin
 
 - [x] What do we need in order to have a _many to many_ relationship between two tables.
 
-  A joiner table, a table that has a one to many relationship with both of the many tables
+  A joiner table, a table that has a one to many relationship with both of the "many" tables
 
 
 ## Minimum Viable Product

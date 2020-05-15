@@ -20,8 +20,9 @@ router.get("/:id",validateProjectID,(req,res)=>{
     Projects.getProjectsByID(req.params.id)
         .then(project => {
             Tasks.getTasksByProjectId(req.params.id)
+            
                 .then(tasks => {
-                    res.status(200).json({...project,tasks:tasks});
+                    res.status(200).json({...project[0],tasks});
                 })
                 .catch(err=>{
                     console.log(err)
