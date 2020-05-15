@@ -22,9 +22,9 @@ exports.up = function(knex) {
     })
     .createTable("project_resource",t=>{
         t.increments("project_resource_id");
-        t.integer("project").unsigned().notNullable()
+        t.integer("project_id").unsigned().notNullable()
             .references("projects.project_id")
-        t.integer("resource").unsigned().notNullable()
+        t.integer("resource_id").unsigned().notNullable()
             .references("resources.resource_id")
     })
 };
