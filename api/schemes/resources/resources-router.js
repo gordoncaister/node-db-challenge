@@ -15,4 +15,23 @@ router.get('/', (req, res) => {
         });
   });
 
+router.post("/",validateResource,(req,res)=>{
+    console.log("Resource post")
+    Resources.createResource(req.body)
+        .then(resource => {
+            res.status(201).json(resource)
+        })
+        .catch(err => {
+            res.status(500).json({error: "Database error while creating resource"+err})
+        })
+})
+
+function validateResource (req,res,next){
+    if (req.body.resource_name){
+        next();
+    } else {
+        res.status(401).json({message: "Please create a resource name"})
+    }
+}
+
 module.exports = router;
